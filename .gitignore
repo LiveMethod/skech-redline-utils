@@ -1,3 +1,6 @@
+.DS_Store
+symbols.sketchplugin/
+
 # Logs
 logs
 *.log

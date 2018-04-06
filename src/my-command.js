@@ -6,6 +6,7 @@ import {
   View,
   Image,
   makeSymbol,
+  StyleSheet,
 } from 'react-sketchapp';
 import values from "../example.json";
 
@@ -55,8 +56,77 @@ const Nested = () => (
 const NestedSym = makeSymbol(Nested);
 
 
+function makeRedlineUtil(size){
+  // this assumes a vertical spacer.
+  // there will need to be some ternary action
+  // to convert to horizontal
+  const containerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    width: size,
+    height: 140,
+    position: 'relative',
+  }
+  const textStyle =  {
+    color: 'red',
+    fontSize: 18,
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  };
+
+  const barStyle =  {
+    width: size,
+    position: 'absolute',
+    bottom: 0,
+    height: 100,
+    alignSelf: 'center',
+    backgroundColor: 'red',
+    opacity: 0.2,
+  };
+
+  // this is the vertical version
+  // logic will be needed for horizontal
+  const barResize = {
+    top: true,
+    right: false,
+    bottom: true,
+    left: false,
+    fixedHeight: false,
+    fixedWidth: true 
+  }
+
+  const RedlineUtil = () => (
+    <View name="Redlines" style={containerStyle}>
+      <Text style={textStyle} name="Size">XX</Text>
+      <View style={barStyle} resizingConstraint={barResize} />
+    </View>
+  );
+
+  const RedlineUtilSym = makeSymbol(RedlineUtil);
+
+  // for each of left/right/bottom/top
+  // make a symbol with a nested function redlineForDirection(size)
+}
+
+makeRedlineUtil(32);
+
+/*
+
+property on View, Text, and Image components
+
+resizingConstraint={{
+  top: true,
+  right: true,
+  bottom: true,
+  left: false,
+  fixedHeight: true,
+  fixedWidth: false 
+}}
+
+*/
+
 // function makeRedlineUtils(src) {
-//   const [, name, iso, width, height, ext] = src.match(flagInfoRegex);
 
 //   makeSymbol(() => (
 //     <Image
