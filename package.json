@@ -1,0 +1,44 @@
+{
+  "name": "skech-redline-utils",
+  "version": "1.0.0",
+  "description": "Make sketch redline symbols from text values",
+  "main": "index.js",
+  "skpm": {
+    "main": "symbols.sketchplugin",
+    "manifest": "src/manifest.json"
+  },
+  "scripts": {
+    "build": "skpm-build",
+    "watch": "skpm-build --watch",
+    "render": "skpm-build --watch --run",
+    "render:once": "skpm-build --run",
+    "postinstall": "npm run build && skpm-link"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiveMethod/skech-redline-utils.git"
+  },
+  "keywords": [
+    "sketch",
+    "react-sketchapp",
+    "bohemian",
+    "redline",
+    "red",
+    "line",
+    "design"
+  ],
+  "author": "Rick Steele",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LiveMethod/skech-redline-utils/issues"
+  },
+  "homepage": "https://github.com/LiveMethod/skech-redline-utils#readme",
+  "devDependencies": {
+    "@skpm/builder": "^0.2.0"
+  },
+  "dependencies": {
+    "react": "^16.3.1",
+    "react-sketchapp": "^1.0.0",
+    "react-test-renderer": "^16.3.1"
+  }
+}
