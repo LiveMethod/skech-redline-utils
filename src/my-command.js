@@ -227,41 +227,14 @@ function makeRedlineUtil(size, name){
   }
 }
 
-
-// function makeRedlineUtils(src) {
-
-//   makeSymbol(() => (
-//     <Image
-//       name={name}
-//       source={`${urlPrefix}${src}`}
-//       style={{ width, height }}
-//     />
-//   ), name)
-// }
-
-// values.forEach(v => makeRedlineUtil(v.size, v.name));
-
 for(let v of values.values){
   makeRedlineUtil(v["size"], v["name"])  
 }
 
-// makeRedlineUtil(32, "md");
-
-
-
-
 export default () => {
   const Document = () => (
     <Artboard name="Swatches" style={{ display: 'flex' }}>
-      {/*<NestedSym
-        name="Nested Symbol"
-        overrides={{
-          'Red Square Instance': BlueSquareSym,
-          'Blue Square Text': 'TESTING',
-          Photo:
-            'https://pbs.twimg.com/profile_images/833785170285178881/loBb32g3.jpg',
-        }}
-      />*/}
+      <Text>View Symbols page to see redline utils</Text>
     </Artboard>
   );
 

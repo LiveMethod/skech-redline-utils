@@ -6,18 +6,23 @@ TODO:
 
 -----------------
 
-css/style docs:
-http://airbnb.io/react-sketchapp/docs/styling.html
+Refactor text width and alignment.
+
+This is two tasks, but the bigger one probably solves the smaller one.
+
+The smaller one is making sure text doesn't wrap when the width of the spacer symbol is less than the width of the text.
+
+The larger one is refactoring away from absolute positioning into the flexbox model. The existing style compartmentalization is already in the right shape, I'd expect. It's just a matter of defining the right flex properties on a per-direction basis.
+
+Then either let the text be whatever width it needs to be, or, the probably easier thing, let the artboard be as wide as it needs to be to fit the text, and center the other stuff.
 
 -----------------
+
+Build the little H shape thing from the material docs
 
 Inserting into groups is going to be an issue at some point. The H shaped line symbol, particularly. 
 read more about doing that here:
 https://github.com/airbnb/react-sketchapp/issues/153
-
------------------
-
-This is a first pass API wise, by just allowing a resizingConstraint={{ top: true, right: true, bottom: true, left: false, fixedHeight: true, fixedWidth: false }} property on View, Text, and Image components. Definitely open to whatever API makes the most sense here (Props, HOC, etc)
 
 -----------------
 
