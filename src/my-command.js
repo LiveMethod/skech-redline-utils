@@ -10,121 +10,223 @@ import {
 } from 'react-sketchapp';
 import values from "../example.json";
 
+function makeRedlineUtil(size, name){
+  const color = 'red';
+  const textSize = 18;
 
-const RedSquare = () => (
-  <View
-    name="Square"
-    style={{ width: 100, height: 100, backgroundColor: 'red' }}
-  >
-    <Text name="Red Square Text">Red Square</Text>
-  </View>
-);
+  // for each element styled by this sheet,
+  // styles appear in the following order:
+  // 
+  // fooAll: all symbols
+  // fooV: all vertical symbols
+  // fooH: all horizontal symbols
+  // fooT: top aligned symbols
+  // fooB: bottom aligned symbols
+  // fooL: left aligned symbols
+  // fooR: right aligned symbols
+  // 
+  // This is perhaps needlessly complicated.
 
-const RedSquareSym = makeSymbol(RedSquare, 'squares/red');
+  const s = StyleSheet.create({
+    containerAll: {
+      display: 'flex',
+      position: 'relative',
+    },
+    containerV: {
+      flexDirection: 'column',
+      width: size,
+      height: 140,
+    },
+    containerH: {
+      flexDirection: 'row',
+      width: 140,
+      height: size,
+    },
+    textAll: {
+      color: color,
+      fontSize: textSize,
+      lineHeight: textSize*0.8,
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+      position: 'absolute',
+    },
+    textV: {
+      textAlign: 'center',
+      left: 0,
+      right: 0,
+    },
+    textT:{
+      top: 0,
+    },
+    textB:{
+      bottom: 0,
+    },
+    textH: {
+      top: (size*0.5) - (textSize*0.5),
+    },
+    textL: {
+      textAlign: 'left',
+      left: 0,
+    },
+    textR: {
+      textAlign: 'right',
+      right: 0,
+    },
+    barAll: {
+      position: 'absolute',
+      // backgroundColor: color,
+      opacity: 0.2,
+    },
+    barV: {
+      width: size,
+      height: 100,
+      alignSelf: 'center',
+    },
+    barT: {
+      bottom: 0,
+      backgroundColor: 'red',
+    },
+    barB: {
+      top: 0,
+      backgroundColor: 'green',
+    },
+    barH: {
+      width: 100,
+      height: size,
+    },
+    barL: {
+      right: 0,
+      backgroundColor: 'blue',
+    },
+    barR: {
+      left: 0,
+      backgroundColor: 'orange',
+    }
+  });
 
-const BlueSquare = () => (
-  <View
-    name="Square"
-    style={{ width: 100, height: 100, backgroundColor: 'blue' }}
-  >
-    <Text name="Blue Square Text">Blue Square</Text>
-  </View>
-);
-
-const BlueSquareSym = makeSymbol(BlueSquare, 'squares/blue');
-
-const Photo = () => (
-  <Image
-    name="Photo"
-    source="https://pbs.twimg.com/profile_images/895665264464764930/7Mb3QtEB_400x400.jpg"
-    style={{ width: 100, height: 100 }}
-  />
-);
-
-const PhotoSym = makeSymbol(Photo);
-
-const Nested = () => (
-  <View name="Multi" style={{ display: 'flex', flexDirection: 'column' }}>
-    <PhotoSym name="Photo Instance" style={{ width: 75, height: 75 }} />
-    <RedSquareSym
-      name="Red Square Instance"
-      style={{ width: 75, height: 75 }}
-    />
-  </View>
-);
-
-const NestedSym = makeSymbol(Nested);
-
-
-function makeRedlineUtil(size){
-  // this assumes a vertical spacer.
-  // there will need to be some ternary action
-  // to convert to horizontal
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    width: size,
-    height: 140,
-    position: 'relative',
-  }
-  const textStyle =  {
-    color: 'red',
-    fontSize: 18,
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  };
-
-  const barStyle =  {
-    width: size,
-    position: 'absolute',
-    bottom: 0,
-    height: 100,
-    alignSelf: 'center',
-    backgroundColor: 'red',
-    opacity: 0.2,
-  };
-
-  // this is the vertical version
-  // logic will be needed for horizontal
-  const barResize = {
+  const barResizeV = {
     top: true,
     right: false,
     bottom: true,
     left: false,
     fixedHeight: false,
-    fixedWidth: true 
+    fixedWidth: true
   }
 
-  const RedlineUtil = () => (
-    <View name="Redlines" style={containerStyle}>
-      <Text style={textStyle} name="Size">XX</Text>
-      <View style={barStyle} resizingConstraint={barResize} />
-    </View>
-  );
+  const barResizeH = {
+    top: false,
+    right: true,
+    bottom: false,
+    left: true,
+    fixedHeight: true,
+    fixedWidth: false
+  }
 
-  const RedlineUtilSym = makeSymbol(RedlineUtil);
+  const textResizeT = {
+    top: true,
+    right: true,
+    bottom: false,
+    left: true,
+    fixedHeight: true,
+    fixedWidth: false
+  }
 
-  // for each of left/right/bottom/top
-  // make a symbol with a nested function redlineForDirection(size)
+  const textResizeB = {
+    top: false,
+    right: true,
+    bottom: true,
+    left: true,
+    fixedHeight: true,
+    fixedWidth: false
+  }
+
+  const textResizeL = {
+    top: true,
+    right: false,
+    bottom: false,
+    left: true,
+    fixedHeight: true,
+    fixedWidth: false
+  }
+
+  const textResizeR = {
+    top: true,
+    right: true,
+    bottom: false,
+    left: false,
+    fixedHeight: true,
+    fixedWidth: false
+  }
+
+
+
+  function redlineForDirection(direction){
+    let symbolName = `spacer-${name}-${size}-${direction}`;
+
+    // Build combined styles depending on direction
+    let containerStyle, textStyle, barStyle, barResize, textResize;
+
+    switch(direction){
+      case 'top':
+        containerStyle = StyleSheet.flatten([s.containerAll, s.containerV]);
+        textStyle = StyleSheet.flatten([s.textAll, s.textV, s.textT]);
+        barStyle = StyleSheet.flatten([s.barAll, s.barV, s.barT]);
+
+        barResize = barResizeV;
+        textResize = textResizeT;
+        break;
+      case 'bottom':
+        containerStyle = StyleSheet.flatten([s.containerAll, s.containerV]);
+        textStyle = StyleSheet.flatten([s.textAll, s.textV, s.textB]);
+        barStyle = StyleSheet.flatten([s.barAll, s.barV, s.barB]);
+
+        barResize = barResizeV;
+        textResize = textResizeB;
+        break;
+      case 'left':
+        containerStyle = StyleSheet.flatten([s.containerAll, s.containerH]);
+        textStyle = StyleSheet.flatten([s.textAll, s.textH, s.textL]);
+        barStyle = StyleSheet.flatten([s.barAll, s.barH, s.barL]);
+
+        barResize = barResizeH;
+        textResize = textResizeL;
+        break;
+      case 'right':
+        containerStyle = StyleSheet.flatten([s.containerAll, s.containerH]);
+        textStyle = StyleSheet.flatten([s.textAll, s.textH, s.textR]);
+        barStyle = StyleSheet.flatten([s.barAll, s.barH, s.barR]);
+
+        barResize = barResizeH;
+        textResize = textResizeR;
+        break;
+    }
+
+    // Build component
+    // const RedlineUtil = () => (
+    makeSymbol(() => (
+      <View name={symbolName} style={containerStyle}>
+        {/*direction == 'top' || direction == 'left'  && (
+          <Text style={textStyle} name="Size">{size}</Text>
+        )*/}
+        <Text style={textStyle} name="Size" resizingConstraint={textResize}>
+          {name}
+        </Text>
+        <View style={barStyle} resizingConstraint={barResize} />
+
+        {/*direction == 'bottom' || direction == 'right'  && (
+          <Text style={textStyle} name="Size">{size}</Text>
+        )*/}
+      </View>
+    ), symbolName);
+  }
+
+  let directions = ['top','bottom','left','right'];
+
+  for(let d of directions){
+    redlineForDirection(d);
+  }
 }
 
-makeRedlineUtil(32);
-
-/*
-
-property on View, Text, and Image components
-
-resizingConstraint={{
-  top: true,
-  right: true,
-  bottom: true,
-  left: false,
-  fixedHeight: true,
-  fixedWidth: false 
-}}
-
-*/
 
 // function makeRedlineUtils(src) {
 
@@ -137,14 +239,21 @@ resizingConstraint={{
 //   ), name)
 // }
 
-// values.forEach(v => makeRedlineUtils(v));
+// values.forEach(v => makeRedlineUtil(v.size, v.name));
+
+for(let v of values.values){
+  makeRedlineUtil(v["size"], v["name"])  
+}
+
+// makeRedlineUtil(32, "md");
+
 
 
 
 export default () => {
   const Document = () => (
     <Artboard name="Swatches" style={{ display: 'flex' }}>
-      <NestedSym
+      {/*<NestedSym
         name="Nested Symbol"
         overrides={{
           'Red Square Instance': BlueSquareSym,
@@ -152,7 +261,7 @@ export default () => {
           Photo:
             'https://pbs.twimg.com/profile_images/833785170285178881/loBb32g3.jpg',
         }}
-      />
+      />*/}
     </Artboard>
   );
 

@@ -1,9 +1,24 @@
 {
-  "values": {
-    "xs": 4,
-    "sm": 8,
-    "md": 16,
-    "lg": 32,
-    "xl": 64
-  }
+  "values": [
+    {
+      "name": "xs",
+      "size": 4
+    },
+    {
+      "name": "sm",
+      "size": 8
+    },
+    {
+      "name": "md",
+      "size": 16
+    },
+    {
+      "name": "lg",
+      "size": 32
+    },
+    {
+      "name": "xl",
+      "size": 48
+    }
+  ]
 }
