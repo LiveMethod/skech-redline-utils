@@ -34,7 +34,10 @@ function makeRedlineUtil(size, name){
     },
     containerV: {
       flexDirection: 'column',
-      width: size,
+      // vertical text needs to be manually sized
+      // or it will wrap when spacing unit width
+      // is less than the natural text width
+      width: name ? (name.length * textSize) : size,
       height: 140,
     },
     containerH: {
@@ -74,7 +77,7 @@ function makeRedlineUtil(size, name){
     },
     barAll: {
       position: 'absolute',
-      // backgroundColor: color,
+      backgroundColor: color,
       opacity: 0.2,
     },
     barV: {
@@ -84,11 +87,9 @@ function makeRedlineUtil(size, name){
     },
     barT: {
       bottom: 0,
-      backgroundColor: 'red',
     },
     barB: {
       top: 0,
-      backgroundColor: 'green',
     },
     barH: {
       width: 100,
@@ -96,11 +97,9 @@ function makeRedlineUtil(size, name){
     },
     barL: {
       right: 0,
-      backgroundColor: 'blue',
     },
     barR: {
       left: 0,
-      backgroundColor: 'orange',
     }
   });
 
