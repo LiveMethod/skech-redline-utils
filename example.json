@@ -1,6 +1,10 @@
 {
   "values": [
     {
+      "name": "xxs",
+      "size": 2
+    },
+    {
       "name": "xs",
       "size": 4
     },
@@ -9,8 +13,16 @@
       "size": 8
     },
     {
+      "name": "md-sm",
+      "size": 12
+    },
+    {
       "name": "md",
       "size": 16
+    },
+    {
+      "name": "md-lg",
+      "size": 24
     },
     {
       "name": "lg",
@@ -18,7 +30,11 @@
     },
     {
       "name": "xl",
-      "size": 48
+      "size": 64
+    },
+    {
+      "name": "xxl",
+      "size": 128
     }
   ]
 }

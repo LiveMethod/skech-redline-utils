@@ -14,6 +14,12 @@ function makeRedlineUtil(size, name){
   const color = 'red';
   const textSize = 18;
 
+  // vertical text needs to be manually sized
+  // or it will wrap when spacing unit width
+  // is less than the natural text width.
+  // 
+  const nameWidth = name ? (name.length * textSize * 0.8) : size;
+
   // for each element styled by this sheet,
   // styles appear in the following order:
   // 
@@ -34,16 +40,13 @@ function makeRedlineUtil(size, name){
     },
     containerV: {
       flexDirection: 'column',
-      // vertical text needs to be manually sized
-      // or it will wrap when spacing unit width
-      // is less than the natural text width
-      width: name ? (name.length * textSize) : size,
+      width: nameWidth > size ? nameWidth : size,
       height: 140,
     },
     containerH: {
       flexDirection: 'row',
-      width: 140,
-      height: size,
+      width: 100 + nameWidth,
+      height: textSize > size ? textSize : size,
     },
     textAll: {
       color: color,
@@ -160,7 +163,7 @@ function makeRedlineUtil(size, name){
 
 
   function redlineForDirection(direction){
-    let symbolName = `spacer-${name}-${size}-${direction}`;
+    let symbolName = `${name}/spacer-${direction}-${size}-${name}`;
 
     // Build combined styles depending on direction
     let containerStyle, textStyle, barStyle, barResize, textResize;
@@ -201,20 +204,12 @@ function makeRedlineUtil(size, name){
     }
 
     // Build component
-    // const RedlineUtil = () => (
     makeSymbol(() => (
       <View name={symbolName} style={containerStyle}>
-        {/*direction == 'top' || direction == 'left'  && (
-          <Text style={textStyle} name="Size">{size}</Text>
-        )*/}
         <Text style={textStyle} name="Size" resizingConstraint={textResize}>
           {name}
         </Text>
         <View style={barStyle} resizingConstraint={barResize} />
-
-        {/*direction == 'bottom' || direction == 'right'  && (
-          <Text style={textStyle} name="Size">{size}</Text>
-        )*/}
       </View>
     ), symbolName);
   }
